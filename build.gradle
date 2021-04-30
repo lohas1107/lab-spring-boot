@@ -12,11 +12,34 @@ repositories {
     mavenCentral()
 }
 
+sourceSets {
+    integration {
+        java.srcDir "/src/integration/java"
+        resources.srcDir "/src/integration/resources"
+    }
+}
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    integrationImplementation 'io.cucumber:cucumber-java:6.8.1'
+}
+
+configurations {
+    cucumberRuntime.extendsFrom integrationImplementation
 }
 
 test {
     useJUnitPlatform()
+}
+
+task cucumber() {
+    dependsOn assemble, integrationClasses
+    doLast {
+        javaexec {
+            main = "io.cucumber.core.cli.Main"
+            classpath = configurations.cucumberRuntime + sourceSets.integration.output
+            args = ['--plugin', 'pretty', '--glue', 'scenario', 'src/integration/resources']
+        }
+    }
 }
