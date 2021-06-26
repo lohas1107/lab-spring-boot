@@ -21,6 +21,9 @@ sourceSets {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok:1.18.18'
+    annotationProcessor 'org.projectlombok:lombok:1.18.18'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     integrationImplementation 'io.cucumber:cucumber-java:6.8.1'
 }
